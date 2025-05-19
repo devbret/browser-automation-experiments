@@ -1,4 +1,9 @@
 {
+  "type": "module",
+  "scripts": {
+    "audit": "node index.js",
+    "clean": "rm -rf audit-results/*"
+  },
   "dependencies": {
     "axe-core": "^4.10.3",
     "lighthouse": "^12.6.0",
