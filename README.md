@@ -1,6 +1,6 @@
 # Browser Automation Experiments
 
-A growing collection of browser automation experiments using tools like [Puppeteer](https://pptr.dev/), [Lighthouse](https://github.com/GoogleChrome/lighthouse) and [Selenium](https://www.selenium.dev/). These scripts are designed to test, analyze and interact with websites automatically, thereby helping improve performance, accessibility and reliability.
+A growing collection of browser automation experiments using tools like [Puppeteer](https://pptr.dev/), [Lighthouse](https://github.com/GoogleChrome/lighthouse) and [Selenium](https://www.selenium.dev/). These scripts are designed to test, analyze and interact with websites automatically, thus helping improve performance, accessibility and reliability.
 
 ## Goals
 
