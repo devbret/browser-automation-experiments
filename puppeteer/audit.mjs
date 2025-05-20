@@ -31,7 +31,7 @@ import { mkdirSync, existsSync } from "fs";
 
 if (!existsSync("audit-results")) mkdirSync("audit-results");
 
-const url = "https://bretbernhoft.com/";
+const url = "https://example.com/";
 
 const browser = await puppeteer.launch({
   headless: true,
