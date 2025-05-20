@@ -25,13 +25,33 @@ cd browser-automation-experiments
 
 ## Technologies Used
 
-- **Node.js** for running automation scripts
+This repo combines a modern frontend stack with powerful headless browser tools to automate web audits and turn raw results into interactive visualizations. Below is a breakdown of the core technologies that make this workflow possible, from test execution to chart rendering.
 
-- **Puppeteer** for headless browser control
+### Automation And Auditing
 
-- **Lighthouse** for web performance and SEO auditing
+- **Node.js:** Runtime for executing audit scripts and handling file operations
 
-- **axe-core** for accessibility testing
+- **Puppeteer:** Controls a headless browser to simulate user interactions and run tests
+
+- **Lighthouse:** Generates performance, SEO, accessibility, and best practices reports
+
+- **axe-core:** Runs in-page accessibility audits from within the browser context
+
+- **fs & path:** Core Node.js modules used to manage file I/O and directory resolution
+
+### Visualization And Frontend
+
+- **React:** UI framework used to build reusable component-based visualizations
+
+- **TypeScript:** Provides strong typing across both frontend and audit data models
+
+- **D3.js:** Renders data-driven SVG charts for metrics like performance and accessibility
+
+- **Vite:** Development server and build tool for fast frontend compilation
+
+- **Tailwind CSS:** Utility-first CSS styling approach used for layout and spacing
+
+- **JSON:** Format for structured audit data shared between the Puppeteer runner and the visualizer
 
 ## Contributions
 

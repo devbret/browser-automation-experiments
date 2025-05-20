@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import puppeteer from "puppeteer";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -29,7 +31,7 @@ import { mkdirSync, existsSync } from "fs";
 
 if (!existsSync("audit-results")) mkdirSync("audit-results");
 
-const url = "https://example.com/";
+const url = "https://bretbernhoft.com/";
 
 const browser = await puppeteer.launch({
   headless: true,
@@ -65,3 +67,28 @@ saveConsoleMessages(consoleMessages);
 saveThirdPartySummary(thirdPartyRequests);
 
 await browser.close();
+
+// Logic for copying newly created JSON files to audit-visualizer project
+const sourceDir = path.resolve("audit-results");
+const targetDir = path.resolve("../audit-visualizer/public/data");
+
+// Ensure target data/target directory exists
+fs.mkdirSync(targetDir, { recursive: true });
+
+// Delete all old JSON files in the target directory
+fs.readdirSync(targetDir).forEach((file) => {
+  if (file.endsWith(".json")) {
+    fs.unlinkSync(path.join(targetDir, file));
+    console.log(`Deleted old file: ${file}`);
+  }
+});
+
+// Copy new JSON files from source to target
+fs.readdirSync(sourceDir).forEach((file) => {
+  if (file.endsWith(".json")) {
+    const src = path.join(sourceDir, file);
+    const dest = path.join(targetDir, file);
+    fs.copyFileSync(src, dest);
+    console.log(`Copied new file: ${file}`);
+  }
+});
