@@ -4,6 +4,8 @@ This directory is a frontend web application built with React, TypeScript, D3.js
 
 ## Project Structure
 
+Here is a simple overview of how this particular project is structured:
+
 ```
 audit-visualizer/
 ├── public/
@@ -36,16 +38,23 @@ This will:
 
 ### 2. Start The Visualizer
 
-From the `audit-visualizer/` directory:
+From the `audit-visualizer/` directory, run the following command in your terminal to install the needed packages:
 
 ```
 npm install
+```
+
+Run this command to start the application:
+
+```
 npm run dev
 ```
 
 Then open `http://localhost:5173` in your browser.
 
 ## Build For Production
+
+If you are interested in building the application for production use, run the following command:
 
 ```
 npm run build
@@ -54,6 +63,8 @@ npm run build
 The app will be compiled to the `dist/` directory.
 
 ## Requirements
+
+The following software programs are required for this application to work correctly:
 
 - Node.js
 
@@ -65,17 +76,17 @@ The app will be compiled to the `dist/` directory.
 
 The Audit Visualizer displays five key datasets from your web audit:
 
-- **Accessibility Violations:** This chart groups accessibility issues by impact level based on results from axe-core.
+- **Accessibility Violations:** This chart groups accessibility issues by impact level based on results from axe-core
 
-- **Lighthouse Scores:** See how your site scores across core Lighthouse categories like performance, SEO, accessibility and best practices.
+- **Lighthouse Scores:** See how your site scores across core Lighthouse categories like performance, SEO, accessibility and best practices
 
-- **Link Status Codes:** Quickly understand which links are working (200), broken or behaving unexpectedly.
+- **Link Status Codes:** Quickly understand which links are working, broken or behaving unexpectedly
 
-- **Third-Party Request Volume:** Visualize how many external requests are made to domains like Google Fonts, Photobucket or others.
+- **Third-Party Request Volume:** Visualize how many external requests are made to domains like Google Fonts, Photobucket or others
 
-- **Performance Timing Metrics:** This chart shows DOM and network-related timestamps relative to connectStart, giving you a clear sense of your site’s load phases.
+- **Performance Timing Metrics:** Shows DOM and network-related timestamps relative to connectStart, giving you a clear sense of your site’s load phases
 
-Each dataset is rendered as a clean, interactive D3 chart that makes the raw data easy to explore and compare.
+Each dataset is rendered as a clean, interactive D3 chart making the raw data easy to explore and compare.
 
 ## Future Improvements
 
