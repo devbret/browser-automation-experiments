@@ -1,6 +1,8 @@
 # Browser Automation Experiments
 
-A growing collection of browser automation experiments using tools like [Puppeteer](https://pptr.dev/), [Lighthouse](https://github.com/GoogleChrome/lighthouse) and [Selenium](https://www.selenium.dev/). These scripts are designed to test, analyze and interact with websites automatically, thus helping improve performance, accessibility and reliability.
+![Screenshot from the Web Audit Visualizer tool within this repo.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/4fbfb7dd-0433-4102-89c8-77716879b84d.png)
+
+A collection of browser automation experiments using tools like [Puppeteer](https://pptr.dev/), [Lighthouse](https://github.com/GoogleChrome/lighthouse) and [Selenium](https://www.selenium.dev/). These scripts are designed to test, analyze and interact with websites automatically, thus helping improve performance, accessibility and reliability.
 
 ## Goals
 
@@ -18,14 +20,19 @@ A growing collection of browser automation experiments using tools like [Puppete
 
 ```
 git clone git@github.com:devbret/browser-automation-experiments.git
+```
+
+2. Open or enter the newly created directory:
+
+```
 cd browser-automation-experiments
 ```
 
-2. Choose a tool directory and follow the README.md inside that folder to install dependencies and run the script(s).
+3. Choose a tool directory and follow the README.md inside each folder to install dependencies and run the script(s)
 
 ## Technologies Used
 
-This repo combines a modern frontend stack with powerful headless browser tools to automate web audits and turn raw results into interactive visualizations. Below is a breakdown of the core technologies that make this workflow possible, from test execution to chart rendering.
+This repo combines a modern frontend stack with powerful headless browser tools to automate web audits and turn raw results into interactive visualizations. Below is a breakdown of the core technologies making this workflow possible, from test execution to chart rendering.
 
 ### Automation And Auditing
 
