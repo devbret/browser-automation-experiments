@@ -68,6 +68,27 @@ Or the following command:
 node index.js
 ```
 
+### Auditing A Custom URL
+
+By default the audit targets `https://example.com/`. To audit a different site,
+pass the URL as an argument. All three entry points accept it:
+
+```
+npm run audit -- https://your-site.com
+node index.js https://your-site.com
+node audit.mjs https://your-site.com
+```
+
+With `npm run audit`, the `--` is required - it tells npm to forward the URL to
+the script rather than treating it as an npm flag.
+
+Quote URLs that contain special characters (such as query strings) so the shell
+does not split them:
+
+```
+node audit.mjs "https://your-site.com/page?a=1&b=2"
+```
+
 ## Cleaning Output
 
 To delete all generated audit files (but keep your source code) use the following command:

@@ -23,7 +23,7 @@ import {
   saveLighthouseScores,
 } from "./modules/lighthouse.js";
 import { getWebVitals } from "./modules/webVitals.js";
-import { trackPayloadSize } from "./modules/payloadSize.js";
+import { trackPayloadSize, savePayloadSize } from "./modules/payloadSize.js";
 import { saveCookiesAndStorage } from "./modules/storage.js";
 import { extractSEOMetadata } from "./modules/seoMeta.js";
 import { getCoverageData } from "./modules/coverage.js";
@@ -31,7 +31,8 @@ import { mkdirSync, existsSync } from "fs";
 
 if (!existsSync("audit-results")) mkdirSync("audit-results");
 
-const url = "https://example.com/";
+const url = process.argv[2] ?? "https://example.com/";
+const targetHostname = new URL(url).hostname;
 
 const browser = await puppeteer.launch({
   headless: true,
@@ -39,43 +40,47 @@ const browser = await puppeteer.launch({
   defaultViewport: { width: 1920, height: 1080 },
 });
 
-const page = await browser.newPage();
+try {
+  const page = await browser.newPage();
 
-// Tracking Setup
-const jsErrors = trackJSErrors(page);
-const consoleMessages = trackConsoleMessages(page);
-const thirdPartyRequests = trackThirdPartyRequests(page);
-trackPayloadSize(page);
+  const jsErrors = trackJSErrors(page);
+  const consoleMessages = trackConsoleMessages(page);
+  const thirdPartyRequests = trackThirdPartyRequests(page, targetHostname);
+  const payloadSize = trackPayloadSize(page);
 
-await page.goto(url, { waitUntil: "networkidle2" });
+  await page.goto(url, { waitUntil: "networkidle2" });
 
-await inspectDOM(page);
-await savePerformanceTiming(page);
-await runAccessibilityAudit(page, require);
-await detectBrokenLinks(page);
-await generatePDF(page, url);
+  await inspectDOM(page);
+  await savePerformanceTiming(page);
+  await runAccessibilityAudit(page, require);
+  await detectBrokenLinks(page);
+  await generatePDF(page);
 
-const lighthouseResult = await runLighthouseAudit(url);
-await saveLighthouseScores(lighthouseResult);
-await getWebVitals(page);
-await saveCookiesAndStorage(page);
-await extractSEOMetadata(page);
-await getCoverageData(page);
+  const lighthouseResult = await runLighthouseAudit(url);
+  await saveLighthouseScores(lighthouseResult);
+  await getWebVitals(page);
+  await saveCookiesAndStorage(page);
+  await extractSEOMetadata(page);
+  await getCoverageData(page);
 
-saveJSErrors(jsErrors);
-saveConsoleMessages(consoleMessages);
-saveThirdPartySummary(thirdPartyRequests);
+  saveJSErrors(jsErrors);
+  saveConsoleMessages(consoleMessages);
+  saveThirdPartySummary(thirdPartyRequests);
+  savePayloadSize(payloadSize);
 
-await browser.close();
+  fs.writeFileSync(
+    "audit-results/meta.json",
+    JSON.stringify({ url, timestamp: new Date().toISOString() }, null, 2)
+  );
+} finally {
+  await browser.close();
+}
 
-// Logic for copying newly created JSON files to audit-visualizer project
 const sourceDir = path.resolve("audit-results");
 const targetDir = path.resolve("../audit-visualizer/public/data");
 
-// Ensure target data/target directory exists
 fs.mkdirSync(targetDir, { recursive: true });
 
-// Delete all old JSON files in the target directory
 fs.readdirSync(targetDir).forEach((file) => {
   if (file.endsWith(".json")) {
     fs.unlinkSync(path.join(targetDir, file));
@@ -83,7 +88,6 @@ fs.readdirSync(targetDir).forEach((file) => {
   }
 });
 
-// Copy new JSON files from source to target
 fs.readdirSync(sourceDir).forEach((file) => {
   if (file.endsWith(".json")) {
     const src = path.join(sourceDir, file);

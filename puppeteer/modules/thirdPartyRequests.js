@@ -1,11 +1,18 @@
 import { writeFileSync } from "fs";
 
-export function trackThirdPartyRequests(page) {
+export function trackThirdPartyRequests(page, targetHostname) {
   const thirdPartyRequests = [];
   page.on("request", (request) => {
-    const url = new URL(request.url());
-    if (!url.hostname.includes("example.com")) {
-      thirdPartyRequests.push(url.hostname);
+    let hostname;
+    try {
+      hostname = new URL(request.url()).hostname;
+    } catch {
+      return;
+    }
+    const isFirstParty =
+      hostname === targetHostname || hostname.endsWith(`.${targetHostname}`);
+    if (!isFirstParty) {
+      thirdPartyRequests.push(hostname);
     }
   });
   return thirdPartyRequests;

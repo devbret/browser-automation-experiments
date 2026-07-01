@@ -1,4 +1,3 @@
-// modules/lighthouse.js
 import { writeFileSync } from "fs";
 import lighthouse from "lighthouse";
 
