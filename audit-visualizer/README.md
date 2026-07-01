@@ -1,6 +1,6 @@
 # Audit Visualizer
 
-This directory is a frontend web application built with React, TypeScript, D3.js and Vite. It visualizes web audit results produced by a Puppeteer-based automation script, providing interactive charts for performance, accessibility, SEO and infrastructure diagnostics.
+This directory is a frontend web application built with React, TypeScript, D3.js, Tailwind CSS and Vite. It turns the JSON produced by the Puppeteer audit into a bold, interactive dashboard - a hero health score, KPI cards, animated gauges, charts and sortable/filterable tables covering performance, accessibility, SEO, coverage and infrastructure diagnostics.
 
 ## Project Structure
 
@@ -9,13 +9,17 @@ Here is a simple overview of how this particular project is structured:
 ```
 audit-visualizer/
 ├── public/
-│   └── data/
+│   └── data/               # JSON copied from the Puppeteer audit
 ├── src/
 │   ├── components/
-│   ├── types/
+│   │   ├── charts/         # Reusable D3 charts (Gauge, Bar, HBar, Donut)
+│   │   ├── panels/         # One panel per metric (Lighthouse, Coverage, …)
+│   │   └── ui/             # Card, StatCard, DataTable, Badge, tooltip
+│   ├── hooks/              # useJson (fetch + error state), useChartTooltip
+│   ├── lib/                # theme (colors), formatters, coverage math
+│   ├── types/audit.ts      # Types for every audit JSON file
 │   ├── App.tsx
-│   ├── main.tsx
-│   └── app.css
+│   └── main.tsx
 ```
 
 ## How To Use
@@ -72,28 +76,40 @@ The following software programs are required for this application to work correc
 
 - JSON audit files located at: `public/data/*.json`
 
-## Charts Included
+## Dashboard Panels
 
-The Audit Visualizer displays five key datasets from your web audit:
+The dashboard surfaces every dataset the audit produces:
 
-- **Accessibility Violations:** This chart groups accessibility issues by impact level based on results from axe-core
+- **Health Header:** Audited URL, timestamp and an overall health score averaged across the Lighthouse categories
 
-- **Lighthouse Scores:** See how your site scores across core Lighthouse categories like performance, SEO, accessibility and best practices
+- **Summary KPIs:** First Contentful Paint, First Paint, total transfer size and request count
 
-- **Link Status Codes:** Quickly understand which links are working, broken or behaving unexpectedly
+- **Lighthouse Scores:** Animated gauges for performance, accessibility, best practices and SEO
 
-- **Third-Party Request Volume:** Visualize how many external requests are made to domains like Google Fonts, Photobucket or others
+- **Performance Timeline:** Navigation timing milestones relative to `navigationStart`
 
-- **Performance Timing Metrics:** Shows DOM and network-related timestamps relative to connectStart, giving you a clear sense of your site’s load phases
+- **Accessibility Violations:** axe-core findings grouped by impact, with a sortable/filterable rule table
 
-Each dataset is rendered as a clean, interactive D3 chart making the raw data easy to explore and compare.
+- **Code Coverage:** Unused JavaScript & CSS gauges plus a per-file breakdown
+
+- **Link Status Codes:** Status-bucket donut with a filterable table of every scanned link
+
+- **Third-Party Requests:** External domains ranked by request count
+
+- **Console Output:** Message counts by type with a searchable log table
+
+- **SEO Metadata:** Title, description, canonical and robots, flagging anything missing
+
+- **JavaScript Errors:** Uncaught runtime errors captured during load
+
+- **Cookies & Storage:** Cookie flags plus localStorage / sessionStorage counts
+
+Charts animate on load and reveal details on hover; tables support sorting and text filtering. Panels that receive no data (e.g. no console errors) show a friendly empty state.
 
 ## Future Improvements
 
-- Tooltip overlays and drill-down views
+- Historical trend view across multiple audit runs
 
-- Filtering and search for violations or link errors
+- Export the dashboard as PNG or PDF
 
-- Tabbed or dashboard-style layout
-
-- Export snapshots as PNG or PDF
+- Compare two audits side by side
