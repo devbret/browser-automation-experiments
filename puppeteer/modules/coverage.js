@@ -1,13 +1,13 @@
 import { writeFileSync } from "fs";
 
-export async function getCoverageData(page) {
+export async function startCoverage(page) {
   await Promise.all([
     page.coverage.startJSCoverage(),
     page.coverage.startCSSCoverage(),
   ]);
+}
 
-  await page.reload({ waitUntil: "networkidle0" });
-
+export async function saveCoverageData(page) {
   const [jsCoverage, cssCoverage] = await Promise.all([
     page.coverage.stopJSCoverage(),
     page.coverage.stopCSSCoverage(),

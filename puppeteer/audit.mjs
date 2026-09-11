@@ -26,7 +26,7 @@ import { getWebVitals } from "./modules/webVitals.js";
 import { trackPayloadSize, savePayloadSize } from "./modules/payloadSize.js";
 import { saveCookiesAndStorage } from "./modules/storage.js";
 import { extractSEOMetadata } from "./modules/seoMeta.js";
-import { getCoverageData } from "./modules/coverage.js";
+import { startCoverage, saveCoverageData } from "./modules/coverage.js";
 import { mkdirSync, existsSync } from "fs";
 
 if (!existsSync("audit-results")) mkdirSync("audit-results");
@@ -34,10 +34,15 @@ if (!existsSync("audit-results")) mkdirSync("audit-results");
 const url = process.argv[2] ?? "https://example.com/";
 const targetHostname = new URL(url).hostname;
 
+const viewport = { width: 1920, height: 1080 };
+
 const browser = await puppeteer.launch({
   headless: true,
-  args: ["--remote-debugging-port=9222"],
-  defaultViewport: { width: 1920, height: 1080 },
+  args: [
+    "--remote-debugging-port=9222",
+    `--window-size=${viewport.width},${viewport.height}`,
+  ],
+  defaultViewport: viewport,
 });
 
 try {
@@ -48,7 +53,11 @@ try {
   const thirdPartyRequests = trackThirdPartyRequests(page, targetHostname);
   const payloadSize = trackPayloadSize(page);
 
+  await startCoverage(page);
+
   await page.goto(url, { waitUntil: "networkidle2" });
+
+  await saveCoverageData(page);
 
   await inspectDOM(page);
   await savePerformanceTiming(page);
@@ -61,7 +70,6 @@ try {
   await getWebVitals(page);
   await saveCookiesAndStorage(page);
   await extractSEOMetadata(page);
-  await getCoverageData(page);
 
   saveJSErrors(jsErrors);
   saveConsoleMessages(consoleMessages);
