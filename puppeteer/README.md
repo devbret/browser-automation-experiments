@@ -30,7 +30,7 @@ The main script (`audit.mjs`) orchestrates a series of modular tests which each 
 
 - **SEO Metadata:** Captures basic SEO tags like title, description, canonical URL and robots directive
 
-- **JavaScript And CSS Coverage:** Detects unused code using Puppeteer’s coverage tools
+- **JavaScript And CSS Coverage:** Detects unused code using Puppeteer's coverage tools
 
 - **Payload Size Estimation:** Tracks total bytes received during page load
 
